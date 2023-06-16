@@ -14,7 +14,7 @@ services:
     actions:
       pre-deploy:
         - run: mvn package -DskipTests
-          path: ./
+          path: ../
     props:
       region: ${vars.region}
       service: ${vars.service}
@@ -29,6 +29,11 @@ services:
         customRuntimeConfig:
           command:
             - ./bootstrap
+        environmentVariables: # this should be hold by faas
+          DB_USERNAME: xx
+          DB_PWD: xx
+          DB_HOST: xx
+          DB_PORT: xx
       triggers:
         - name: httpTrigger
           type: http
