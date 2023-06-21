@@ -3,11 +3,9 @@ package top.hubby.fc.web.controller;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * @author T04856 <br>
@@ -17,13 +15,16 @@ import java.util.Map;
 @RestController
 public class HelloController {
 
+    private static final String PGSQL_HEALTH = "SELECT 1 FROM pg_database LIMIT 1";
+    private static final String MYSQL_HEALTH = "SELECT 1 FROM DUAL LIMIT 1";
+
     @Resource private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/actuator/health")
-    public String listHeaders(@RequestHeader Map<String, String> headers) {
+    public String health() {
 
         try {
-            jdbcTemplate.execute("SELECT 1 FROM DUAL");
+            jdbcTemplate.execute(PGSQL_HEALTH);
         } catch (DataAccessException e) {
             return "DB Is Down!";
         }

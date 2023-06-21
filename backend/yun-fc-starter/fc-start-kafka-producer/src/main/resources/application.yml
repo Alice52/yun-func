@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/order-hub?ssl=false&stringtype=unspecified
+    username: ${DB_USERNAME}
+    password: ${DB_PWD}
+  kafka:
+    bootstrap-servers: alice3.hubby.top:9092
+    properties:
+      #      ssl.endpoint.identification.algorithm: https
+      #      sasl.mechanism: GSSAPI
+      request.timeout.ms: 200000
+      retry.backoff.ms: 50000
+      #      security.protocol: PLAINTEXT
+      #      client.dns.lookup: use_all_dns_ips
+      schema.registry.url: http://alice3.hubby.top:8081
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      # transaction-id-prefix: false
+#      properties:
+        # enable.idempotence: false
+#        interceptor:
+#          classes: io.opentracing.contrib.kafka.TracingProducerInterceptor

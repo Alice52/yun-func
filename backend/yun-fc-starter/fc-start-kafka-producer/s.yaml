@@ -1,0 +1,44 @@
+edition: 1.0.0
+name: fc-start-springboot
+access: 'ali-func'
+
+vars:
+  region: 'cn-hangzhou'
+  service:
+    name: 'fc-start-kafka-producer-demo-0jc6'
+    description: 'Serverless Devs Web Framework Service'
+
+services:
+  fc-start-springboot-demo:
+    component: fc
+    actions:
+      pre-deploy:
+        - run: mvn package -DskipTests
+          path: ../
+    props:
+      region: ${vars.region}
+      service: ${vars.service}
+      function:
+        name: 'restapi-kafka-producer'
+        description: 'Serverless Devs Web Framework Function'
+        codeUri: ./
+        runtime: custom
+        memorySize: 1024
+        timeout: 30
+        instanceConcurrency: 100
+        customRuntimeConfig:
+          command:
+            - ./bootstrap
+        environmentVariables: # this should be hold by faas
+          DB_USERNAME: xx
+          DB_PWD: xx
+          DB_HOST: xx
+          DB_PORT: xx
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST

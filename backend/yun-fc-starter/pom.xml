@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.12</version>
+        <version>2.4.6</version>
     </parent>
 
     <groupId>top.hubby</groupId>
@@ -15,9 +15,10 @@
     <version>${reversion}</version>
     <packaging>pom</packaging>
 
-
     <modules>
         <module>fc-start-springboot</module>
+        <module>fc-start-kafka-producer</module>
+        <module>fc-start-common</module>
     </modules>
 
     <properties>
@@ -33,11 +34,43 @@
         <mybatis.plus.version>3.5.2</mybatis.plus.version>
         <mysql.connector.version>8.0.25</mysql.connector.version>
         <p6spy.version>3.9.1</p6spy.version>
-
+        <postgresql.version>42.3.3</postgresql.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>share-service-release</id>
+            <url>https://nexus.lululemon.cn/repository/share-service-release/</url>
+        </repository>
+        <repository>
+            <id>share-service-snapshot</id>
+            <url>https://nexus.lululemon.cn/repository/share-service-snapshot/</url>
+        </repository>
+        <repository>
+            <id>confluent</id>
+            <url>https://nexus.lululemon.cn/repository/lululemon_confluent/</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
+            <!-- common -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.11</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.2.8</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
             <!-- database -->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -64,11 +97,71 @@
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
 
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.2.0</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>log4j-to-slf4j</artifactId>
+                        <groupId>org.apache.logging.log4j</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper-spring-boot-starter</artifactId>
+                <version>2.1.5</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>mybatis-spring</artifactId>
+                        <groupId>org.mybatis</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- kafka -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>2.6.8</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro</artifactId>
+                <version>1.11.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-schema-registry-client</artifactId>
+                <version>7.0.0</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>jersey-common</artifactId>
+                        <groupId>org.glassfish.jersey.core</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <artifactId>jersey-common</artifactId>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <version>2.34</version>
+            </dependency>
+            <dependency>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-avro-serializer</artifactId>
+                <version>7.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-streams-avro-serde</artifactId>
+                <version>7.0.0</version>
             </dependency>
 
             <dependency>
