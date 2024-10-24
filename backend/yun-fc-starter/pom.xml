@@ -31,7 +31,7 @@
         <junit.version>4.12</junit.version>
 
         <!-- db -->
-        <mybatis.plus.version>3.5.2</mybatis.plus.version>
+        <mybatis.plus.version>3.5.9</mybatis.plus.version>
         <mysql.connector.version>8.0.25</mysql.connector.version>
         <p6spy.version>3.9.1</p6spy.version>
         <postgresql.version>42.3.3</postgresql.version>
